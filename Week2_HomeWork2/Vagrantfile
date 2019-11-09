@@ -10,27 +10,27 @@ MACHINES = {
         :ip_addr => '192.168.11.2',
         :disks => {
           :sata1 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata1.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata1.vdi',
             :size => 256,
             :port => 2
           },
           :sata2=> {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata2.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata2.vdi',
             :size => 256,
             :port => 3
           },
           :sata3 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata3.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata3.vdi',
             :size => 256,
             :port => 4
           },
           :sata4 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata4.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata4.vdi',
             :size => 256,
             :port => 5
           },
           :sata5 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata5.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata5.vdi',
             :size => 256,
             :port => 6
           }
