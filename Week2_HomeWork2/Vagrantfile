@@ -10,27 +10,27 @@ MACHINES = {
         :ip_addr => '192.168.11.2',
         :disks => {
           :sata1 => {
-            :dfile => home_dir + 'VirtualBox VMs/sata1.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata1.vdi',
             :size => 256,
             :port => 2
           },
           :sata2=> {
-            :dfile => home_dir + 'VirtualBox VMs/sata2.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata2.vdi',
             :size => 256,
             :port => 3
           },
           :sata3 => {
-            :dfile => home_dir + 'VirtualBox VMs/sata3.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata3.vdi',
             :size => 256,
             :port => 4
           },
           :sata4 => {
-            :dfile => home_dir + 'VirtualBox VMs/sata4.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata4.vdi',
             :size => 256,
             :port => 5
           },
           :sata5 => {
-            :dfile => home_dir + 'VirtualBox VMs/sata5.vdi',
+            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/sata5.vdi',
             :size => 256,
             :port => 6
           }
@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
         vb.customize ["storagectl", :id, "--name", "SATA", "--add", "sata"]
         boxconfig[:disks].each do |dname, dconf|
           unless File.exist?(dconf[:dfile])
-            vb.customize ['createmedium', '--filename', dconf[:dfle], '--variant', 'Fixed', '--size', dconf[:size]]            
+            vb.customize ['createmedium', '--filename', dconf[:dfile], '--variant', 'Fixed', '--size', dconf[:size]]            
           end
           vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', dconf[:port], '--device', 0, '--type', 'hdd', '--medium', dconf[:dfile]]
         end
