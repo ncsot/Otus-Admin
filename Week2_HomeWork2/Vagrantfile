@@ -2,34 +2,34 @@
 #vim: set ft=ruby :
 # Домашняя работа №2
 
-home = ENV("HOME")
+home_dir = "~"
 
 MACHINES = {
   :"otus-lab2" => {
         :box_name => "geerlingguy/centos7",
         :ip_addr => '192.168.11.2',
         :disks => {
-          sata1 => {
+          :sata1 => {
             :dfile => home_dir + 'VirtualBox VMs/sata1.vdi',
             :size => 256,
             :port => 2
           },
-          sata2=> {
+          :sata2=> {
             :dfile => home_dir + 'VirtualBox VMs/sata2.vdi',
             :size => 256,
             :port => 3
           },
-          sata3 => {
+          :sata3 => {
             :dfile => home_dir + 'VirtualBox VMs/sata3.vdi',
             :size => 256,
             :port => 4
           },
-          sata4 => {
+          :sata4 => {
             :dfile => home_dir + 'VirtualBox VMs/sata4.vdi',
             :size => 256,
             :port => 5
           },
-          sata5 => {
+          :sata5 => {
             :dfile => home_dir + 'VirtualBox VMs/sata5.vdi',
             :size => 256,
             :port => 6
