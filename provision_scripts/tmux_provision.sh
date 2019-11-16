@@ -6,3 +6,8 @@ git clone https://github.com/tmux-plugins/tmux-logging ~/.tmux
 echo "run-shell ~/.tmux/logging.tmux" > ~/.tmux.conf
 tmux new -t kernel-compile -d
 tmux source-file ~/.tmux.conf
+
+eval "`dircolors -p > ~/.dircolors`"
+s="`dircolors -b ~/.dircolors`"
+echo "eval \"$s\"
+alias ls='ls --color=auto'" >> ~/.bashrc
