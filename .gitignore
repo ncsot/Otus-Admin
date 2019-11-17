@@ -1,3 +1,6 @@
 */.vagrant
 */*.old
 */packer/output-vagrant
+*/*box
+./*box
+*.box
