@@ -5,3 +5,6 @@
 ./*box
 *.box
 test_latest_kern/
+test_disk/
+.test_*/
+test_latest_kern/Vagrantfile

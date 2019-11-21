@@ -2,43 +2,27 @@
 #vim: set ft=ruby :
 # Домашняя работа №2
 
+distr_name = 'ncsot/centos7-otuslab'
 home_dir = ENV["HOME"]
+disk_place = home_dir + '\VirtualBox VMs/otus-lab-disk/'
+disk_name = 'lab2-sata'
+disk_extension = "vdi"
+disk_size = 2048
+disk_amt = 5
+cpu_amt = 4
+memory_size = 300
+guest_ip = '192.168.11.2'
+
 
 MACHINES = {
   :"otus-lab2" => {
-        :box_name => "geerlingguy/centos7",
-        :ip_addr => '192.168.11.2',
-        :disks => {
-          :sata1 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata1.vdi',
-            :size => 256,
-            :port => 2
-          },
-          :sata2=> {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata2.vdi',
-            :size => 256,
-            :port => 3
-          },
-          :sata3 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata3.vdi',
-            :size => 256,
-            :port => 4
-          },
-          :sata4 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata4.vdi',
-            :size => 256,
-            :port => 5
-          },
-          :sata5 => {
-            :dfile => home_dir + '\VirtualBox VMs/otus-lab-disk/lab2-sata5.vdi',
-            :size => 256,
-            :port => 6
-          }
-        }
+        :box_name => distr_name,
+        :ip_addr => guest_ip
   }
 }
 
 Vagrant.configure("2") do |config|
+  config.vm.box_check_update = false
   MACHINES.each do |boxname, boxconfig|
     config.vm.define boxname do |box|
       box.vm.box = boxconfig[:box_name]
@@ -47,25 +31,28 @@ Vagrant.configure("2") do |config|
       box.vm.synced_folder '.',"/home/vagrant/shared_folder/", type:"virtualbox" 
       box.vm.provider :virtualbox do |vb|
         vb.name = "otus-lab2"
-        vb.customize ["modifyvm", :id, "--memory", "2048"]
-        vb.customize ["modifyvm", :id, "--cpus", "4"]
+        vb.customize ["modifyvm", :id, "--memory", memory_size]
+        vb.customize ["modifyvm", :id, "--cpus", cpu_amt]
         vb.customize ["modifyvm", :id, "--groups", "/otus-admin-course"]
         controllerExist = true
-        boxconfig[:disks].each do |dname, dconf|
-          unless File.exist?(dconf[:dfile])
-            vb.customize ['createmedium', '--filename', dconf[:dfile], '--variant', 'Fixed', '--size', dconf[:size]]
-            controllerExist = false            
+        (1..disk_amt).each do |n|
+          proceed_disk =  "%s/%s-%02d.%s" % [disk_place, disk_name, n, disk_extension]
+          unless File.exist?(proceed_disk)
+            vb.customize ['createmedium', '--filename', proceed_disk, '--variant', 'Fixed', '--size', disk_size]
+            controllerExist = false
           end
         end
         if controllerExist == false
           vb.customize ["storagectl", :id, "--name", "SATA", "--add", "sata"]
-          boxconfig[:disks].each do |dname, dconf|
-            vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', dconf[:port], '--device', 0, '--type', 'hdd', '--medium', dconf[:dfile]]
+          (1..disk_amt).each do |n|
+            proceed_disk =  "%s/%s-%02d.%s" % [disk_place, disk_name, n, disk_extension]
+            vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', n+1, '--device', 0, '--type', 'hdd', '--medium', proceed_disk]
           end
         end
       end
       box.vm.provision "shell", path: "../provision_scripts/provision-lab2.sh"
       box.vm.provision "shell", path: "../provision_scripts/tmux_provision.sh", privileged: false
+      box.vm.provision :shell, :inline => "sudo rm /etc/localtime && sudo ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime", run: "always"
     end
   end
 end
