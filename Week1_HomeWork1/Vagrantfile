@@ -9,6 +9,9 @@ MACHINES = {
 }
 
 Vagrant.configure("2") do |config|
+  config.vbguest.auto_update = false
+  config.vbguest.auto_update = false
+  config.vbguest.no_remote = true
   MACHINES.each do |boxname, boxconfig|
     config.vm.define boxname do |box|
       box.vm.box = boxconfig[:box_name]
@@ -19,7 +22,7 @@ Vagrant.configure("2") do |config|
         vb.name = "otus-lab1"
         vb.customize ["modifyvm", :id, "--memory", "2048"]
         vb.customize ["modifyvm", :id, "--cpus", "4"]
-        vb.customize ["modifyvm", :id, "--groups", "/otus-admin-course"]
+        
         end
     end
   end

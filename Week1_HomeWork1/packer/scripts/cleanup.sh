@@ -1,20 +1,28 @@
-#!/bin/bash -eux
+#!/bin/bash
 
-# Install elrepo
-yum install -y http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
-# Install new kernel
-yum --enablerepo elrepo-kernel install kernel-ml -y
-# Remove older kernels (Only for demo! Not Production!)
-rm -f /boot/*3.10*
-# Update GRUB
-grub2-mkconfig -o /boot/grub2/grub.cfg
-grub2-set-default 0
-echo "Grub update done."
-yum clean all
+rm -f /home/vagrant/*.iso
+rm -rf /media
+rm -f ~root/.bash_history
+rm -f ~root/*.log
+rm -f /home/vagrant/.bash_history 
 
-mkdir -pm 700 /home/vagrant/.ssh
-curl -sL https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub -o /home/vagrant/.ssh/authorized_keys
-chmod 0600 /home/vagrant/.ssh/authorized_keys
-chown -R vagrant:vagrant /home/vagrant/.ssh
+rm -rf /tmp/*
+find /var/log -type f | while read f; do echo -ne '' > $f; done;
+rm -f /var/log/vbox*
+yum erase -y gcc make bzip2 perl kernel-ml-headers\* kernel-ml-tools\* kernel-ml-devel\* postfix *iwl* aic* yum-utils
+yum -y clean all
+rm -rf /var/cache/yum
 
-shutdown -r now
+rm -f /boot/*rescue*
+grub2-mkconfig -o "$(readlink -e /etc/grub2.cfg)"
+
+echo "Fill with 0 the swap partition to reduce box size"
+readonly swapuuid=$(/sbin/blkid -o value -l -s UUID -t TYPE=swap)
+readonly swappart=$(readlink -f /dev/disk/by-uuid/"$swapuuid")
+/sbin/swapoff "$swappart"
+dd if=/dev/zero of="$swappart" bs=1M || echo "dd exit code $? is suppressed"
+/sbin/mkswap -U "$swapuuid" "$swappart"
+
+dd if=/dev/zero of=/EMPTY bs=1M | true
+rm -rf /EMPTY
+sync

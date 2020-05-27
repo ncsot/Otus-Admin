@@ -1,0 +1,115 @@
+{
+    "builders": [
+      {
+        "type": "virtualbox-iso",
+        "guest_os_type": "RedHat_64",
+        "iso_url": "{{user `mirror`}}/7.8.2003/isos/x86_64/CentOS-7-x86_64-NetInstall-2003.iso",
+        "iso_checksum": "{{user `iso_checksum`}}",
+        "iso_checksum_type": "{{user `iso_checksum_type`}}",
+        "output_directory": "output-centos-7.7-x86_64-{{build_type}}",
+        "vm_name": "packer-centos-7v11",
+        "guest_additions_mode": "disable",
+        "disk_size": "{{user `disk_size`}}",
+        "hard_drive_discard": "{{user `hard_drive_discard`}}",
+        "hard_drive_nonrotational": "{{user `hard_drive_nonrotational`}}",
+        "headless": "{{user `headless`}}",
+        "hard_drive_interface": "{{user `hard_drive_interface`}}",
+        "sata_port_count": "2",
+        "http_directory": "http",
+        "boot_wait": "5s",
+        "boot_command": [
+          "<esc>",
+          "<wait>",
+          "linux inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/ks.cfg biosdevname=0 net.ifnames=0 ks=",
+          "<enter>"
+        ],
+        "ssh_timeout": "{{user `ssh_timeout`}}",
+        "ssh_pty": true,
+        "ssh_username": "{{user `ssh_user`}}",
+        "ssh_password": "{{user `ssh_pass`}}",
+        "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
+        "vboxmanage": [
+          ["modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}"],
+          ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}"],
+          ["modifyvm", "{{.Name}}", "--audio", "none"],
+          ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "virtio"],
+          ["modifyvm", "{{.Name}}", "--graphicscontroller", "vmsvga"],
+          ["modifyvm", "{{.Name}}", "--vram", "128"]
+        ]
+      }
+    ],
+    
+    "provisioners": [
+      {
+        "type": "shell",
+        "expect_disconnect": true,
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "start_retry_timeout": "1m",
+        "pause_before": "20s",
+        "script": "scripts/sudoers.sh"
+      },
+      {
+        "type": "shell",
+        "expect_disconnect": true,
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "start_retry_timeout": "1m",
+        "pause_before": "20s",
+        "script": "scripts/insertVagrantKey.sh"
+      },
+      {
+        "type": "shell",
+        "expect_disconnect": true,
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "start_retry_timeout": "1m",
+        "pause_before": "20s",
+        "script": "scripts/updateKernel.sh"
+      },
+      {
+        "type": "shell",
+        "expect_disconnect": true,
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "start_retry_timeout": "1m",
+        "pause_before": "20s",
+        "script": "scripts/repoProvisions.sh"
+      },
+      {
+        "type": "shell",
+        "expect_disconnect": true,
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "start_retry_timeout": "1m",
+        "pause_before": "20s",
+        "script": "scripts/guestAdditions.sh"
+      },
+      {
+        "type": "shell",
+        "expect_disconnect": true,
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "start_retry_timeout": "1m",
+        "pause_before": "20s",
+        "script": "scripts/cleanup.sh"
+      }
+    ],
+    "post-processors": [
+      {
+        "type": "vagrant",
+        "compression_level": "{{user `compression_level`}}",
+        "output": "packer-box_prod11.box"
+      }
+    ],
+    "variables": {
+      "ssh_pass": "vagrant",
+      "ssh_user": "vagrant",
+      "compression_level": "9",
+      "cpus": "2",
+      "disk_size": "10000",
+      "hard_drive_discard": "true",
+      "hard_drive_interface": "sata",
+      "hard_drive_nonrotational": "true",
+      "headless": "false",
+      "iso_checksum": "101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372",
+      "iso_checksum_type": "sha256",
+      "memory": "2048",
+      "mirror": "https://mirror.yandex.ru/centos",
+      "ssh_timeout": "60m"
+    }
+  }
