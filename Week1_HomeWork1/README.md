@@ -3,7 +3,7 @@ ______________________
 ###### Текущая версия [v.0.0.2](CHANGELOG.md)
 Сборка пакером Centos 7 с обновленным ml ванильным ядром из Elrepo
 
-***Prerequsites:***
+***Prerequisites:***
 - Virtualbox >6.1.8
 - Vagrant >1.5
 
