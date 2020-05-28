@@ -6,6 +6,7 @@ ______________________
 ***Prerequisites:***
 - Virtualbox >6.1.8
 - Vagrant >1.5
+- vagrant-vbguest plugin
 
 ***Install:***
 ```
