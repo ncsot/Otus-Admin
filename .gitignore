@@ -4,6 +4,8 @@
 */*box
 ./*box
 *.box
+*/debug
+*/*.log
 test_latest_kern/
 test_disk/
 .test_*/
