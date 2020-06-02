@@ -1,13 +1,25 @@
-lsblk
+```lsblk```
 
-cat /proc/devices
+```cat /proc/devices```
 
-stat /dev/sda
+```stat /dev/sda```
 
-fdisk -l
+```fdisk -l```
 
-parted /dev/sda print free
+```parted /dev/sda print free```
 
-swapon -s
 текущее состояние swap
+- ```swapon -s```
 
+посмотреть файловые системы
+- ```df -Th```
+- ```mount | column -t```
+- 
+
+```cat /proc/devices
+cat /etc/fstab
+cat /proc/mdstat
+stat /dev/sda
+```
+blkid
+http://rus-linux.net/nlib.php?name=/MyLDP/consol/HuMan/blkid-ru.html
