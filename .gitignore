@@ -12,3 +12,4 @@ test_disk/
 test_latest_kern/Vagrantfile
 settings.json
 otus-admin.code-workspace
+*/packer/packer.exe

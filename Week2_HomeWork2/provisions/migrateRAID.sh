@@ -75,7 +75,7 @@ yes | cp -f /etc/fstab /mnt/etc/fstab
 yes | cp -f /etc/default/grub /mnt/etc/default/grub 
 cat /mnt/etc/fstab
 cat /mnt/etc/default/grub 
-chrootFunc="dracut --mdadmconf --fstab --add=\"mdraid\" --add-drivers=\"raid1 raid5\" --force /boot/initramfs-5.7.0-1.el7.elrepo.x86_64.img 5.7.0-1.el7.elrepo.x86_64 -M 
+chrootFunc="dracut --mdadmconf --fstab --add=\"mdraid\" --add-drivers=\"raid1 raid5\" --force /boot/initramfs-5.7.1-1.el7.elrepo.x86_64.img 5.7.1-1.el7.elrepo.x86_64 -M 
 grub2-mkconfig -o /boot/grub2/grub.cfg
 grub2-install /dev/sdb
 grub2-install /dev/sdc

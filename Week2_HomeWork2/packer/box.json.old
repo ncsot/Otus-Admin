@@ -7,14 +7,14 @@
         "iso_checksum": "{{user `iso_checksum`}}",
         "iso_checksum_type": "{{user `iso_checksum_type`}}",
         "output_directory": "output-centos-7.7-x86_64-{{build_type}}",
-        "vm_name": "packer-centos-7v11",
+        "vm_name": "otuslab",
         "guest_additions_mode": "disable",
         "disk_size": "{{user `disk_size`}}",
         "hard_drive_discard": "{{user `hard_drive_discard`}}",
         "hard_drive_nonrotational": "{{user `hard_drive_nonrotational`}}",
         "headless": "{{user `headless`}}",
         "hard_drive_interface": "{{user `hard_drive_interface`}}",
-        "sata_port_count": "2",
+        "sata_port_count": "0",
         "http_directory": "http",
         "boot_wait": "5s",
         "boot_command": [
@@ -33,7 +33,7 @@
           ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}"],
           ["modifyvm", "{{.Name}}", "--audio", "none"],
           ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "virtio"],
-          ["modifyvm", "{{.Name}}", "--graphicscontroller", "vmsvga"],
+          ["modifyvm", "{{.Name}}", "--graphicscontroller", "vboxvga"],
           ["modifyvm", "{{.Name}}", "--vram", "128"]
         ]
       }
@@ -46,7 +46,7 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
         "start_retry_timeout": "1m",
         "pause_before": "20s",
-        "script": "../../packer_sripts/sudoers.sh"
+        "script": "scripts/sudoers.sh"
       },
       {
         "type": "shell",
@@ -54,7 +54,7 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
         "start_retry_timeout": "1m",
         "pause_before": "20s",
-        "script": "../../packer_sripts/insertVagrantKey.sh"
+        "script": "scripts/insertVagrantKey.sh"
       },
       {
         "type": "shell",
@@ -62,7 +62,7 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
         "start_retry_timeout": "1m",
         "pause_before": "20s",
-        "script": "../../packer_sripts/updateKernel.sh"
+        "script": "scripts/updateKernel.sh"
       },
       {
         "type": "shell",
@@ -70,7 +70,7 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
         "start_retry_timeout": "1m",
         "pause_before": "20s",
-        "script": "../../packer_sripts/repoProvisions.sh"
+        "script": "scripts/repoProvisions.sh"
       },
       {
         "type": "shell",
@@ -78,7 +78,7 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
         "start_retry_timeout": "1m",
         "pause_before": "20s",
-        "script": "../../packer_sripts/guestAdditions.sh"
+        "script": "scripts/guestAdditions.sh"
       },
       {
         "type": "shell",
@@ -86,14 +86,14 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
         "start_retry_timeout": "1m",
         "pause_before": "20s",
-        "script": "../../packer_sripts/cleanup.sh"
+        "script": "scripts/cleanup.sh"
       }
     ],
     "post-processors": [
       {
         "type": "vagrant",
         "compression_level": "{{user `compression_level`}}",
-        "output": "packer-box_prod11.box"
+        "output": "otuslab.box"
       }
     ],
     "variables": {
@@ -101,14 +101,14 @@
       "ssh_user": "vagrant",
       "compression_level": "9",
       "cpus": "2",
-      "disk_size": "10000",
+      "disk_size": "5000",
       "hard_drive_discard": "true",
       "hard_drive_interface": "sata",
       "hard_drive_nonrotational": "true",
       "headless": "false",
       "iso_checksum": "101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372",
       "iso_checksum_type": "sha256",
-      "memory": "2048",
+      "memory": "1024",
       "mirror": "https://mirror.yandex.ru/centos",
       "ssh_timeout": "60m"
     }
