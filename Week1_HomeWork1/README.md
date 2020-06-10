@@ -1,11 +1,12 @@
 ## Домашняя работа № 1
 ______________________
-###### Текущая версия [v.0.0.2](CHANGELOG.md)
+###### Текущая версия box [v.0.0.2](CHANGELOG.md)
 Сборка пакером Centos 7 с обновленным ml ванильным ядром из Elrepo
 
 ***Prerequisites:***
 - Virtualbox >6.1.8
-- Vagrant >1.5
+- Vagrant >2.2.9
+- Packer >1.5.9
 - vagrant-vbguest plugin
 
 ***Install:***
