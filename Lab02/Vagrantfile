@@ -4,9 +4,9 @@
 
 distr_name = 'ncsot/centos7-otuslab-4raid'
 home_dir = ENV["HOME"] + '/VirtualBox VMs'
-groups_name_path = '/otus-admin-course'
+groups_name_path = '/otus-admin-course/'
 root_disk_path = home_dir + groups_name_path + 'otuslab-disk001.vmdk'
-disk_place = home_dir + groups_name_path + '/otus-lab-disk/'
+disk_place = home_dir + groups_name_path + 'otus-lab-disk/'
 disk_name = 'raidarr'
 disk_extension = "vmdk"
 disk_size = 5000
