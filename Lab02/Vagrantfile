@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
           vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', n+1, '--device', 0, '--type', 'hdd', '--medium', proceed_disk]
         end 
       end
-      box.vm.provision "shell", path: "./provisions/migrateRAID.sh"
+      box.vm.provision "shell", path: "../provision_scripts/migrateRAID.sh"
       box.trigger.after :halt do |trigger|
         trigger.info = "Detach old storage"
         trigger.ruby do |env,machine|
