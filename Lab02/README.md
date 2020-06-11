@@ -13,7 +13,7 @@ ______________________
 ***Install:***
 ```
  git clone https://github.com/ncsot/Otus-Admin.git
- cd Week2_HomeWork2
+ cd ./Otus-Admin/Lab02
  vagrant up && vagrant halt && vagrant up  <--- ###ONLY##
 ```
 ***Description:***
