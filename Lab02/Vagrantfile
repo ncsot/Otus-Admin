@@ -1,6 +1,6 @@
 #-*- mode: ruby -*-
 #vim: set ft=ruby :
-# Домашняя работа №2
+# Лабараторная №2
 
 distr_name = 'ncsot/centos7-otuslab-4raid'
 home_dir = ENV["HOME"] + '/VirtualBox VMs'

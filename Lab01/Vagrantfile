@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 # vim: set ft=ruby :
-# Домашняя работа №1
+# Лабараторная №1
 MACHINES = {
   :"otus-lab1" => {
         :box_name => "ncsot/centos7-otuslab",
