@@ -1,8 +1,6 @@
 */.vagrant
 */*.old
-*/*box
-./*box
-*.box
+
 */debug
 */*.log
 test_latest_kern/
@@ -11,4 +9,3 @@ test_disk/
 test_latest_kern/Vagrantfile
 settings.json
 otus-admin.code-workspace
-*/packer/packer.exe
