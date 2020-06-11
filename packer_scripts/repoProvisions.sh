@@ -1,6 +1,5 @@
 #!/bin/bash
-
-echo "NEWWWWWWWWWWWWWWWWWWWWWWWW****************"
+echo "REPO PROVISION"
 yum clean all
 yum-config-manager --enable base updates
 yum makecache
@@ -13,6 +12,6 @@ yum list installed | grep kernel*
 echo "*******PREPARE NEXT SCRIPT****************"
 
 yum install -y gcc perl bzip2 make
-yum install -y kernel-ml-headers* kernel-ml-tools* kernel-ml-devel*
+yum install -y kernel-lt-headers* kernel-lt-tools* kernel-lt-devel*
 
 

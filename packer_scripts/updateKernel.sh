@@ -14,7 +14,7 @@ yum-config-manager --enable elrepo-kernel >/dev/null
 echo "REPOLIST"  
 yum repolist  
 echo "Provision repo"  
-yum install -y kernel-ml  &&
+yum install -y kernel-lt  &&
 echo "GOTCHA Kernel Loaded"  
 
 echo "DELETE OLD KERNEL"  

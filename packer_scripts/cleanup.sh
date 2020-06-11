@@ -9,7 +9,7 @@ rm -f /home/vagrant/.bash_history
 rm -rf /tmp/*
 find /var/log -type f | while read f; do echo -ne '' > $f; done;
 rm -f /var/log/vbox*
-yum erase -y gcc make bzip2 perl kernel-ml-headers\* kernel-ml-tools\* kernel-ml-devel\* postfix *iwl* aic* yum-utils
+yum erase -y gcc make bzip2 perl kernel-lt-headers\* kernel-lt-tools\* kernel-lt-devel\* postfix *iwl* aic* yum-utils
 yum -y clean all
 rm -rf /var/cache/yum
 
