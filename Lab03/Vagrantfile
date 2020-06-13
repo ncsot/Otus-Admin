@@ -1,26 +1,26 @@
 #-*- mode: ruby -*-
 #vim: set ft=ruby :
-# Лабараторная №2
+# Лабараторная №3
 
-distr_name = 'ncsot/centos7-otuslab-4raid'
-lab_num = 'lab2'
+distr_name = 'ncsot/centos7-otuslab'
+lab_num = 'lab3'
 vm_name = 'ncsot-' + lab_num
 home_dir = ENV["HOME"] + '/VirtualBox VMs'
 groups_name_path = '/ncsot-otuslab'
-root_disk_path = home_dir + groups_name_path + '/' + vm_name + '/otuslab-4raid-disk001.vmdk'
 disk_place = home_dir + groups_name_path
-disk_name = 'raidarr'
+disk_name = 'replica-hdd'
 disk_extension = "vmdk"
-disk_size = 5000
-disk_amt = 4
+disk_size = 2000
+disk_amt = 1
 cpu_amt = 2
 memory_size = 1024
 
 Vagrant.configure("2") do |config|
-  config.vm.box_check_update = false
   config.vbguest.auto_update = false
   config.vbguest.no_remote = true
   config.vm.box = distr_name
+  config.vm.box_version = '= 0.0.3'
+  config.vm.box_check_update = false
   config.vm.host_name = vm_name
   config.vm.synced_folder '.',"/home/vagrant/shared_folder/", type:"virtualbox" 
   config.vm.provider :virtualbox do |vb|
@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
     (1..disk_amt).each do |n|
       proceed_disk =  "%s/%s-%02d.%s" % [disk_place, disk_name, n, disk_extension]
       unless File.exist?(proceed_disk)
-        vb.customize ['createmedium', '--filename', proceed_disk, '--format','vmdk','--variant', 'Standard', '--size', disk_size]
+        vb.customize ['createmedium', '--filename', proceed_disk, '--format','vmdk','--variant', 'Fixed', '--size', disk_size]
       end
     end
     (1..disk_amt).each do |n|
@@ -39,17 +39,4 @@ Vagrant.configure("2") do |config|
       vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', n+1, '--device', 0, '--type', 'hdd', '--medium', proceed_disk]
     end 
   end
-  #config.vm.provision "shell", path: "../provision_scripts/migrateRAID.sh"
-  config.trigger.after :halt do |trigger|
-    trigger.info = "Detach old storage"
-    trigger.ruby do |env,machine|
-      puts `VBoxManage.exe storageattach #{machine.id} --storagectl "SATA Controller" --port 0 --medium emptydrive`
-    end
-  end
-  config.trigger.after :destroy do |trigger|
-    trigger.info = "Delete old storage"
-    trigger.ruby do |env,machine|
-      puts `VBoxManage.exe closemedium  "#{root_disk_path}" --delete`
-    end
-  end 
 end
