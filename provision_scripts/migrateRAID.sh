@@ -65,8 +65,6 @@ sed -i ':a;N;$!ba;s/UUID=[A-Fa-f0-9-]*/UUID='"$mdUUIDroot"'/1' /etc/fstab
 sed -i ':a;N;$!ba;s/UUID=[A-Fa-f0-9-]*/UUID='"$mdUUIDboot"'/2' /etc/fstab
 echo UUID=${mdUUIDhome} /home ext4 defaults 1 3 >> /etc/fstab
 
-echo "start dracut"
-dracut --mdadmconf --fstab --add="mdraid" --add-drivers="raid1 raid5" --force /boot/initramfs-$(uname -r).img $(uname -r) -M
 
 sed -i "s/rhgb quiet/rd.auto rd.auto=1 /" /etc/default/grub
 echo 'GRUB_PRELOAD_MODULES="mdraid1x"' >> /etc/default/grub

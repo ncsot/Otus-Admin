@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
     (1..disk_amt).each do |n|
       proceed_disk =  "%s/%s-%02d.%s" % [disk_place, disk_name, n, disk_extension]
       unless File.exist?(proceed_disk)
-        vb.customize ['createmedium', '--filename', proceed_disk, '--format','vmdk','--variant', 'Fixed', '--size', disk_size]
+        vb.customize ['createmedium', '--filename', proceed_disk, '--format','vmdk','--variant', 'Standard', '--size', disk_size]
       end
     end
     (1..disk_amt).each do |n|
