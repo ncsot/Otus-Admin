@@ -2,6 +2,7 @@
 ______________________
 ###### Текущая версия box [v.0.0.1](../packer/raidLabBox/CHANGELOG.md)
 Миграция с одного hdd на raid массивы
+***[СКРИПТ для сборки](../provision_scripts/migrateRAID.sh)***
 
 ***Prerequisites:***
 - Virtualbox >6.1.8
