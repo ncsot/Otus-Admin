@@ -10,7 +10,6 @@ ______________________
 - Vagrant >2.2.9
 - Packer >1.6
 - vagrant-vbguest plugin
-- FREE SPACE 22gb+ in ~ directory
 
 ***Install:***
 ```
