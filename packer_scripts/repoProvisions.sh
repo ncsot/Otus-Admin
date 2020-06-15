@@ -3,6 +3,7 @@ echo "REPO PROVISION"
 yum clean all
 yum-config-manager --enable base updates
 yum makecache
+yum update -y
 yum install -y yum-plugin-remove-with-leaves
 sed -i 's/^#remove_always = 1/remove_always = 1/' /etc/yum/pluginconf.d/remove-with-leaves.conf
 echo "*************DELETE OLD KERNELS***********"  
