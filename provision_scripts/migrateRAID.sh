@@ -27,11 +27,19 @@ parted /dev/sde -s set 2 raid
 parted /dev/sde -s set 4 raid
 sgdisk -G /dev/sde
 
-echo yes | mdadm --create --verbose /dev/md0 -l 1 -n 5 missing /dev/sdb2 /dev/sdc2 /dev/sdd2 /dev/sde2 | grep started
-echo yes | mdadm --create --verbose /dev/md1 -l 1 -n 3 /dev/sdb3 /dev/sdc3 /dev/sdd3 | grep started
-echo yes | mdadm --create --verbose /dev/md2 -l 5 -n 4 /dev/sdb4 /dev/sdc4 /dev/sdd4 /dev/sde4 | grep started
+echo yes | mdadm --create --verbose /dev/md0 -l 1 -n 4 /dev/sdb2 /dev/sdc2 /dev/sdd2 /dev/sde2 
+echo yes | mdadm --create --verbose /dev/md1 -l 1 -n 3 /dev/sdb3 /dev/sdc3 /dev/sdd3 
+echo yes | mdadm --create --verbose /dev/md2 -l 5 -n 4 /dev/sdb4 /dev/sdc4 /dev/sdd4 /dev/sde4 
 
-for i in {0..2}; do mkfs.ext4 /dev/md${i}; done && echo "MAKE FS"
+echo 'WAITING TO RAID'
+
+sleep 10
+cat /proc/mdstat
+sleep 60
+cat /proc/mdstat
+
+echo 'MAKE FS'
+for i in {0..2}; do mkfs.ext4 /dev/md${i}; done 
 cat /etc/fstab
 swapoff -a
 mkswap /dev/sde3
@@ -45,9 +53,9 @@ echo "DEVICE partitions" >> /etc/mdadm.conf
 echo "MAILADDR root" >> /etc/mdadm.conf
 mdadm --detail --scan --verbose | awk '/ARRAY/ {print}' >> /etc/mdadm.conf
 
-
+echo  'START COPY ROOT'
 mount /dev/md1 /mnt
-rsync -auxHAXS --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/mnt/*  --exclude=/boot/* --exclude=/home/* /* /mnt && echo "copy root"
+rsync -auxHAXS --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/mnt/*  --exclude=/boot/* --exclude=/home/* /* /mnt && echo "COPY ROOT"
 mount /dev/md0 /mnt/boot
 mount /dev/md2 /mnt/home
 rsync -auxHAXS /boot/* /mnt/boot
@@ -70,9 +78,13 @@ sed -i "s/rhgb quiet/rd.auto rd.auto=1 /" /etc/default/grub
 echo 'GRUB_PRELOAD_MODULES="mdraid1x"' >> /etc/default/grub
 
 yes | cp -f /etc/fstab /mnt/etc/fstab
-yes | cp -f /etc/default/grub /mnt/etc/default/grub 
+yes | cp -f /etc/default/grub /mnt/etc/default/grub
+echo '********NEW FSTAB*********'
 cat /mnt/etc/fstab
-cat /mnt/etc/default/grub 
+echo '********NEW GRUB CONF*********'
+cat /mnt/etc/default/grub
+echo '********MDADMCONF ON RAID*********'
+cat /mnt/etc/mdadm.conf
 chrootFunc="dracut --mdadmconf --fstab --add=\"mdraid\" --add-drivers=\"raid1 raid5\" --force /boot/initramfs-5.7.1-1.el7.elrepo.x86_64.img 5.7.1-1.el7.elrepo.x86_64 -M 
 grub2-mkconfig -o /boot/grub2/grub.cfg
 grub2-install /dev/sdb
@@ -80,7 +92,7 @@ grub2-install /dev/sdc
 grub2-install /dev/sdd
 grub2-install /dev/sde
 exit"
-echo "start chroot provision"
+echo "START CHROOT PROVISION"
 echo "$chrootFunc" >> /mnt/nextProvis.sh
 chmod 700 /mnt/nextProvis.sh
 chroot /mnt /bin/bash -c ./nextProvis.sh
