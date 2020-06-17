@@ -40,32 +40,35 @@ DISK_ARR.each do |ext, cfg|
 end
 
 Vagrant.configure("2") do |config|
-  config.vbguest.auto_update = false
-  config.vbguest.no_remote = true
+  config.vbguest.auto_update = true
   config.vm.box = distr_name
   config.vm.box_version = distr_ver
   config.vm.box_check_update = false
   config.vm.host_name = vm_name
+  config.vm.synced_folder '.',"/home/vagrant/shared_folder/", type:"virtualbox" 
   config.vm.provider :virtualbox do |vb|
     vb.name = vm_name
-    vb.customize ["storagectl", :id, "--name", "SATA Controller", "--add", "sata"]
     vb.customize ["storageattach", :id, "--storagectl", "IDE", "--port", "0", "--device", "0", "--medium", "none",]
     vb.customize ["modifyvm", :id, "--memory", memory_size]
     vb.customize ["modifyvm", :id, "--cpus", cpu_core]
     vb.customize ["modifyvm", :id, "--groups", groups_name_path]
     vb.customize ["storageattach", :id, "--storagectl", "SATA Controller",'--type', 'hdd', "--port", "0", "--device", "0","--medium", root_dist_path]
     vb.customize ["storagectl", :id, "--name", "IDE", "--remove"]
+    controllerExist = true
     DISK_ARR.each do |ext, cfg|
       (1..cfg[:damt]).each do |n|
         proceed_disk =  "%s/%s-%02d.%s" % [disk_place, cfg[:dname], n, disk_extension]
         unless File.exist?(proceed_disk)
           vb.customize ['createmedium', '--filename', proceed_disk, '--format', disk_extension, '--variant', 'Standard', '--size', cfg[:dsize]]
-          
+          controllerExist = false
         end
       end
     end
-    flat_disk_arr.each_with_index do |pdisk, idx|
-        vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', idx+1, '--device', 0, '--type', 'hdd', '--medium', pdisk]
+    if controllerExist == false
+      vb.customize ["storagectl", :id, "--name", "SATA Controller", "--add", "sata"]
+      flat_disk_arr.each_with_index do |pdisk, idx|
+          vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', idx+1, '--device', 0, '--type', 'hdd', '--medium', pdisk]
+      end
     end
   end
 end
