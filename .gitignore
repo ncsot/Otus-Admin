@@ -11,3 +11,6 @@ settings.json
 otus-admin.code-workspace
 */*/packer_cache
 */*/*.box
+Lab03/test/.vagrant/bundler/global.sol
+Lab03/test/.vagrant/rgloader/loader.rb
+Lab03/test/Vagrantfile
