@@ -1,13 +1,10 @@
-sudo yum -y install  https://centos7.iuscommunity.org/ius-release.rpm
-sudo yum install -y tmux2u
-touch ~/.tmux.conf
-mkdir ~/.tmux
-git clone https://github.com/tmux-plugins/tmux-logging ~/.tmux
-echo "run-shell ~/.tmux/logging.tmux" > ~/.tmux.conf
-tmux new -t kernel-compile -d
-tmux source-file ~/.tmux.conf
+#!/bin/bash
+echo "Install tmux"
+git clone https://github.com/tmux/tmux.git &&
+cd ./tmux &&
+sh ./autogen.sh &&
+./configure && make && sudo make install
 
-eval "`dircolors -p > ~/.dircolors`"
-s="`dircolors -b ~/.dircolors`"
-echo "eval \"$s\"
-alias ls='ls --color=auto'" >> ~/.bashrc
+echo "Install tmux plugin"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+tmux source ~/.tmux.conf
